@@ -9,35 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Attendance Using Face Recognition</title>
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='tdb-package/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='tdb-package/css/payu.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='tdb-package/framework/style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='tdb-package/font/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='tdb-package/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
     <script src="{{ url_for('static', filename='tdb-package/js/jquery.min.js')}}"></script>
     <script src="{{ url_for('static', filename='tdb-package/js/nav.js')}}"></script>
 </head>
 
 <body class="b-tdb-pro5">
-<HTML>
-<BODY bgcolor="cyan">
-<form method="POST" action="">
-    <center>
-    <H1>Enter your details </H1> <br>
-    First Name <input type = "text" name= "fname" /> <br>
-    Last Name <input type = "text" name = "lname" /> <br>
-    <input type = "submit">
-    </center>
-</form>
-</BODY>
-</HTML>
     <!--sidebar-->
 <div class="sidebar">
-    <a href="#"><p>New Account</p></a>
-    <a href="#"><p>Login</p></a>
-<a href="#"><p>Student</p></a>
-<a href="#"><p>Teacher</p></a>
-
+    <a href="/registration"><p>New Account</p></a>
+    <a href="/login"><p>Login</p></a>
+    <a href="/developer"><p>Developers</p></a>
 </div>
 
 <nav class="b-tdb-white bold-tdb5 font-tdb 16 c-tdb-gray7 s-center-tdb1">
@@ -45,11 +31,10 @@
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
 <div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
-<a href="#" class="c-tdb-black">Login</a>
-<a href="#" class="c-tdb-black">Student</a>
-<a href="#" class="c-tdb-black">Teacher</a>
-<a href="#" class="c-tdb-black">Support</a>
-<a href="#" class="c-tdb-black">Developers</a>
+<a href="/login" class="c-tdb-black">Login</a>
+<a href="/registration" class="c-tdb-black">Registration</a>
+<a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
+<a href="/developer" class="c-tdb-black">Developers</a>
 </div>
 <div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-black">
 <!--<a href="html5.html">Login</a><a href="css3.html">SignUp</a>-->
@@ -112,7 +97,9 @@
         </div>
     </section>
 
-
+    <div class="center">
+{{ session['email'] }}
+    </div>
 
     <section id="learn" class="center section1 b-tdb-green1 position-r-tdb c-tdb-gray8">
         <br>
@@ -126,7 +113,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
-                    <a href="#" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                    <a href="/add-face" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Create Dataset</h1>
                         <br>Create a new dataset for face recognition app.
@@ -135,7 +122,7 @@
                     </div></a>
                 </div>
                 <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
-                    <a href="#" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                    <a href="/train" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Train Dataset</h1>
                         <br>Start training dataset
@@ -144,7 +131,7 @@
                     </div></a>
                 </div>
                 <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
-                    <a href="#" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                    <a href="/recogniser" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Recognize + Attendance</h1>
                         <br>Start Attendance Recognizer
