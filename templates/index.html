@@ -22,7 +22,13 @@
     <!--sidebar-->
 <div class="sidebar">
     <a href="/registration"><p>New Account</p></a>
+    {% if session['email'] %}
+    <a href="/logout"><p>Logout</p></a>
+
+    {% else %}
     <a href="/login"><p>Login</p></a>
+    {% endif %}
+
     <a href="/developer"><p>Developers</p></a>
 </div>
 
@@ -31,8 +37,14 @@
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
 <div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
-<a href="/login" class="c-tdb-black">Login</a>
+        {% if session['email'] %}
+<a href="/logout" class="c-tdb-black">Logout</a>
+            {% else %}
+            <a href="/login" class="c-tdb-black">Login</a>
+    {% endif %}
+
 <a href="/registration" class="c-tdb-black">Registration</a>
+<a href="#tools" class="c-tdb-black">Tools</a>
 <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
 <a href="/developer" class="c-tdb-black">Developers</a>
 </div>
@@ -46,15 +58,19 @@
 </nav>
 
 <section class="header c-tdb-white position-r-tdb" style="background:linear-gradient(to right,#131635, #3b47a7,#131635)">
-    <img src="../static/img/2.png" class="position-a-tdb" style="top:115px;left:-20px;width:40%;z-index:0;opacity: 0.5;">
+    <img src="../static/img/2.png" class="mylogo1 position-a-tdb" style="top:115px;left:-20px;width:40%;z-index:0;opacity: 0.5;">
 
-    <img src="../static/img/2.png" alt="developerbrains" class="position-a-tdb" style="top:60px;right:10px;width:30%;z-index:0;opacity: 0.5;">
+    <img src="../static/img/2.png" alt="developerbrains" class="mylogo2 position-a-tdb" style="top:60px;right:10px;width:30%;z-index:0;opacity: 0.5;">
 
 <center>
    <img src="../static/img/2.png" alt="developerbrains" class="w-px-tdb200 mylogo" style="margin:0 auto;">
 <style>
 .mylogo{animation: google 10s infinite running;}
 @keyframes google{from{transform: rotate(0deg)}to{transform: rotate(360deg)}}
+    .mylogo1{animation: google 60s infinite running;}
+@keyframes google{from{transform: rotate(0deg)}to{transform: rotate(360deg)}}
+    .mylogo2{animation: google 20s infinite reverse;}
+@keyframes google{from{transform: rotate(360deg)}to{transform: rotate(0deg)}}
 </style>
 
 <br><br>
@@ -82,7 +98,7 @@
             </div>
 
         </center>
-        <div class="position-a-tdb bottom-tdb0 w-per-tdb100 left-tdb0">
+        <div class="position-a-tdb bottom-tdb0 w-per-tdb100 left-tdb0" id="tools">
             <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
                 <defs>
                     <path id="gentle-wave" d="M-180 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
@@ -110,7 +126,7 @@
         You can control every module from here...
         <br><br><br>
         <br>
-        <div class="container">
+        <div class="container" >
             <div class="row">
                 <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
                     <a href="/add-face" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">

@@ -204,7 +204,7 @@ def recognise():
                 id_, conf = recognizer.predict(roi_gray)
                 if conf >= 50 and conf <= 85:
                     if labels[id_]:
-                        print(labels[id_])
+                        print(labels[id_], session['email'])
                     # level = labels[id_]
                     # session['level'] = level
                     # level = session['level']
@@ -287,14 +287,14 @@ def regi():
         # cursor.execute("SELECT * from todotask where id=2")
         cursor.execute("INSERT INTO account(name, email, phone, password) VALUES(%s, %s, %s, %s)", (name, email,phone, password))
         # data = cursor.fetchone()
-        if conn.commit():
-            # session['email'] = email
-            # session.pop('email', None)
-            # Close connection
-            cursor.close()
-            conn.close()
-            # return redirect(url_for('add'))
-            return "Registration Successful."
+        conn.commit()
+        # session['email'] = email
+        # session.pop('email', None)
+        # Close connection
+        cursor.close()
+        conn.close()
+        # return redirect(url_for('add'))
+        return "Registration Successful."
 
 
 # registration form
@@ -308,7 +308,7 @@ def log():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * from account where email='email' and password = 'password'")
+        cursor.execute("SELECT * from account where email=email and password = password")
         # records = cursor.fetchall()
         # cursor.execute("INSERT INTO account(name) VALUES(%s)", (name)
         results = cursor.fetchone()
@@ -316,7 +316,7 @@ def log():
             email1 = str(results[2])
             session['email'] = email1
             email1 = session['email']
-        return render_template('index.html', email1=email1)
+            return render_template('index.html', email1=email1)
 
         cursor.close()
         conn.close()
