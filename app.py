@@ -15,6 +15,11 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 
+@app.route('/notification')
+def notify():
+    return render_template('notification.html')
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -186,6 +191,7 @@ def recognise():
         recognizer.read("face-trainner.yml")
 
         labels = {"person_name": 1}  # load label from pickle
+
         with open("labels.pickle", 'rb') as f:
             og_labels = pickle.load(f)
             labels = {v: k for k, v in og_labels.items()}  # inverting the key value pairs
@@ -193,7 +199,6 @@ def recognise():
         cap = cv2.VideoCapture(0)
 
         while True:
-
             # Capture frame-by-frame
             ret, frame = cap.read()
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -202,9 +207,30 @@ def recognise():
                 roi_gray = gray[y:y + h, x:x + w]  # (ycord_start, ycord_end)
                 roi_color = frame[y:y + h, x:x + w]
                 id_, conf = recognizer.predict(roi_gray)
-                if conf >= 50 and conf <= 85:
+                if conf >= 10 and conf <= 85:
+                    p=0
                     if labels[id_]:
-                        print(labels[id_], session['email'])
+                        p = 1
+                        if p == 1:
+                            session['level'] = labels[id_]
+                            levels = session['level']
+                            conn = mysql.connect()
+                            cursor = conn.cursor()
+
+                            cursor.execute("INSERT INTO registration(id_number) VALUES(%s)", (levels))
+                            # data = cursor.fetchone()
+                            conn.commit()
+                            # session['email'] = email
+                            # session.pop('email', None)
+                            # Close connection
+                            cursor.close()
+                            conn.close()
+                            # return redirect(url_for('add'))
+                            return render_template('notification.html', levels=levels)
+                            # return render_template('index.html', levels=levels)
+                            p += 1
+                        print(levels)
+
                     # level = labels[id_]
                     # session['level'] = level
                     # level = session['level']
