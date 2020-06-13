@@ -19,9 +19,13 @@
 </head>
 
 <body class="b-tdb-pro5">
+{% if 'email' not in session %}
+<h5>Not Allowed</h5>
+
+{% else %}
     <!--sidebar-->
 <div class="sidebar">
-    <a href="/registration"><p>New Account</p></a>
+
     {% if session['email'] %}
     <a href="/logout"><p>Logout</p></a>
 
@@ -29,7 +33,7 @@
     <a href="/login"><p>Login</p></a>
     {% endif %}
 
-    <a href="/developer"><p>Developers</p></a>
+
 </div>
 
 <nav class="b-tdb-white bold-tdb5 font-tdb 16 c-tdb-gray7 s-center-tdb1">
@@ -37,19 +41,18 @@
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
 <div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
-        {% if session['email'] %}
+{% if session['email'] %}
 <a href="/logout" class="c-tdb-black">Logout</a>
-            {% else %}
-            <a href="/login" class="c-tdb-black">Login</a>
-    {% endif %}
+{% else %}
+<a href="/login" class="c-tdb-black">Login</a>
+{% endif %}
 
-<a href="/registration" class="c-tdb-black">Registration</a>
-<a href="#tools" class="c-tdb-black">Tools</a>
+
+<a href="#tools" class="c-tdb-black">Attendance</a>
 <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
-<a href="/developer" class="c-tdb-black">Developers</a>
 </div>
-<div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-black">
-<!--<a href="html5.html">Login</a><a href="css3.html">SignUp</a>-->
+<div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-gray6">
+    <i class="fa fa-user"></i> {{ session['email'] }}
 </div>
 </div>
 </div>
@@ -79,12 +82,12 @@
                 <br><br>
                 <br>
 
-                <h1 class="bold-tdb5 font-tdb28 ">Artificial Intelligence</h1>
+                <h1 class="bold-tdb5 font-tdb28 ">Attendance Sheet</h1>
                 <br> College of <span class="bold-tdb5 c-tdb-yellow6">Technology</span> Pantnagar | IT <span class="bold-tdb5 c-tdb-yellow6">Department</span>
                 <br>
                 <br>
                 <br>
-                <a href="#learn"><span class="btn-tdb btn-tdb1 b-tdb-white c-tdb-gray8 font-tdb14 s-bottom-tdb1 s-active-none">Start Now <i class="fa fa-arrow-right"></i></span></a>
+                <a href="#learn"><span class="btn-tdb btn-tdb1 b-tdb-white c-tdb-gray8 font-tdb14 s-bottom-tdb1 s-active-none">Show Attendance <i class="fa fa-arrow-right"></i></span></a>
                 <br>
                 <br>
                 <br>
@@ -113,56 +116,73 @@
         </div>
     </section>
 
-    <div class="center">
-{{ session['email'] }}
-    </div>
+
 
     <section id="learn" class="center section1 b-tdb-green1 position-r-tdb c-tdb-gray8">
         <br>
         <br><br>
-        <h1 class="c-tdb-blue9 font-tdb28 bold-tdb3 letter-tdb1">&lt/Options></h1>
-        <h1 class="font-tdb21 bold-tdb3 letter-tdb1 c-tdb-blue3"></h1>
-        Select options<br>
-        You can control every module from here...
+
+
         <br><br><br>
         <br>
         <div class="container" >
             <div class="row">
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
-                    <a href="/add-face" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                <div class="col-lg-12 padding-left-tdb5 padding-right-tdb5">
+                    <div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
-                        <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Create Dataset</h1>
-                        <br>Create a new dataset for face recognition app.
-                        <br>
-                        <br><br>
-                    </div></a>
-                </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
-                    <a href="/train" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
-                        <br>
-                        <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Train Dataset</h1>
-                        <br>Start training dataset
-                        <br>
-                        <br><br>
-                    </div></a>
-                </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
-                    <a href="/recogniser" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
-                        <br>
-                        <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Recognize + Attendance</h1>
-                        <br>Start Attendance Recognizer
-                        <br>
-                        <br><br>
-                    </div></a>
-                </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
-                    <a href="#" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
-                       <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Attendance Sheet</h1>
-                         <br>Show Attendance Sheet
+                        <br>Click on the buttons to fetch the Attendance Sheet<br><br>
+                        <form action="{{url_for('attend')}}" method="POST" style="display: inline-block">
+                        <input type="submit" class="s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-green8 c-tdb-white center" value="1st Year"/>
+                        </form>
+                         <form action="{{url_for('second')}}" method="POST" style="display: inline-block">
+                        <input type="submit" class="s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-pink8 c-tdb-white center" value="2nd Year"/>
+                        </form>
+                            <form action="{{url_for('third')}}" method="POST" style="display: inline-block">
+                        <input type="submit" class="s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-orange8 c-tdb-white center" value="3rd Year"/>
+                        </form>
+                            <form action="{{url_for('final')}}" method="POST" style="display: inline-block">
+                        <input type="submit" class="s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-red6 c-tdb-white center" value="final Year"/>
+                        </form>
+
                         <br>
                         <br><br>
-                    </div></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 padding-left-tdb5 padding-right-tdb5">
+                    <div class=" b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                        <table>
+                            <thead>
+                            <tr class="b-tdb-orange c-tdb-white font-tdb15">
+                                <td class="w-per-tdb5 padding-bottom-tdb10 padding-top-tdb10">Name</td>
+                                <td class="w-per-tdb5">Id Number</td>
+                                <td class="w-per-tdb5">Email Id</td>
+                                <td class="w-per-tdb5">Phone Number</td>
+                                <td class="w-per-tdb5">Time</td>
+                                <td class="w-per-tdb5">Date</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+{% for i in level %}
+<tr><td class="padding-top-tdb5 padding-bottom-tdb5 b-tdb-gray3">{{ i[1]}}</td>
+<td>{{ i[2]}}</td>
+<td class="b-tdb-gray1">{{ i[3]}}</td>
+<td>{{ i[5]}}</td>
+<td>{{ i[9]}}</td>
+<td>{{ i[10]}}</td>
+</tr>
+{% endfor %}
+</tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+
+
                 </div>
             </div>
         </div>
@@ -194,35 +214,40 @@
             </svg>
         </div>
     </section>
-    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7">
+
+    <!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer-->
+
+    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7"><br><br>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">WEB TECHNOLOGY</h1>
-                                <a href="#" class="c-tdb-gray7">Login</a><br>
-                                <a href="#" class="c-tdb-gray7">Sign Up</a><br>
-                                <a href="#" class="c-tdb-gray7">Help</a><br>
-                                <a href="#" class="c-tdb-gray7">Support</a>
-
+                                <h1 class="font-tdb14 bold-tdb4">NAVIGATION</h1>
+                                <a href="/" class="c-tdb-gray7">Home</a><br>
+                                <a href="/login" class="c-tdb-gray7">Login</a><br>
+                                <a href="/registration" class="c-tdb-gray7">Sign Up</a><br>
+                                <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-gray7">Support</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">LINKS</h1>
+                                <h1 class="font-tdb14 bold-tdb4">OTHER LINKS</h1>
                                 <a href="https://www.thedeveloperbrains.com" class="c-tdb-gray7">The developer brains</a>
+                              <br> <a href="https://github.com/phoenixFire33/Atttendence-System" class="c-tdb-gray7">GitHub</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
                                 <h1 class="font-tdb14 bold-tdb4">ADDRESS</h1>
+                                I.T. Department,
+                                College of Technology,
                                 G.B.P.U.A.T, Pantnagar<br>
                                 PIN 244713
-                               
+
                                 <br>
                                 <br>
                                 <br>
@@ -235,21 +260,23 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12" style="text-align: justify;">
-                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1> Face Recognition app using Artificial Intelligence. You can easily control student's attendance activities by using this AI App.                               <br>
-                                <br><br><br><br>
+                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1>
+                                Advance attendance management system using face detection app is used to detect faces
+                                and then it is recognised with the Database and finally the attendance is marked.<br>
+                                <br><br>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 padding-left-tdb30">
-                    © Copyright 2020, thedeveloperbrains. All rights are reserved.
+                    @Team TheDeveloperBrains. G.B.P.U.A.T Pantnagar
                 </div>
 
             </div>
         </div>
     </section>
-
+{% endif %}
 </body>
 
 </html>

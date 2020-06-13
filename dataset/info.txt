@@ -1,1 +1,1 @@
-This folder should existing in your working directory for saving the training data of the students id- wise
+The Folder dataset is required for saving images id-wise.

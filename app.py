@@ -1,9 +1,8 @@
 from flask import *
 from flaskext.mysql import MySQL
-
-#import recognize
-#import train
-from wtforms import Form, StringField, TextAreaField, validators
+import datetime as dd
+import time as tt
+# from wtforms import Form, StringField, TextAreaField, validators
 app = Flask(__name__)
 app.secret_key = 'developerbrains'
 
@@ -13,6 +12,26 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'face_recog'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
+
+
+
+@app.route('/attendance')
+def attendance():
+    if 'email' in session:
+        return render_template('attendance.html')
+        # return render_template('index.html')
+    else:
+        return "Not Allowed <a href='/'>Home</a>"
+
+
+@app.route('/loginstatus')
+def loginstatus():
+    return render_template('login-status.html')
+
+
+@app.route('/signupstatus')
+def signupstatus():
+    return render_template('signupstatus.html')
 
 
 @app.route('/notification')
@@ -38,13 +57,12 @@ def myface():
         import cv2
         face1 = request.form
         student_id = face1['id']
-
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * from registration")
+        cursor.execute("SELECT * from account where id_number=%s", (student_id))
         results = cursor.fetchone()
-        if str(results[1]) == student_id:
+        if str(results[7]) == '1':
             return 'Already Registered...'
 
         else:
@@ -109,7 +127,7 @@ def myface():
             cursor = conn.cursor()
 
             # cursor.execute("SELECT * from todotask where id=2")
-            cursor.execute("INSERT INTO registration(id_number,email) VALUES(%s, %s)", (student_id, 'azeemmuhammad98@gmail.com'))
+            cursor.execute("UPDATE face_recog.account set status='1' where id_number=%s", (student_id))
             # data = cursor.fetchone()
             conn.commit()
             # session['email'] = email
@@ -123,7 +141,7 @@ def myface():
 
             # close all win
             cv2.destroyAllWindows()
-    return "Scanning successful.<br><a href = '/'></b>Home</b></a>"
+    return render_template('data-status.html')
 
 
 @app.route('/train')
@@ -202,13 +220,14 @@ def recognise():
             # Capture frame-by-frame
             ret, frame = cap.read()
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
             for (x, y, w, h) in faces:
                 roi_gray = gray[y:y + h, x:x + w]  # (ycord_start, ycord_end)
-                roi_color = frame[y:y + h, x:x + w]
+                # roi_color = frame[y:y + h, x:x + w]
+                # cv2.rectangle(faces, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 id_, conf = recognizer.predict(roi_gray)
-                if conf >= 10 and conf <= 85:
-                    p=0
+                if conf >= 70 and conf <= 80:
+                    p = 0
                     if labels[id_]:
                         p = 1
                         if p == 1:
@@ -216,20 +235,23 @@ def recognise():
                             levels = session['level']
                             conn = mysql.connect()
                             cursor = conn.cursor()
+                            date1 = dd.date.today()
+                            mydate = str(date1)
+                            time1 = tt.localtime()
+                            time1 = tt.strftime("%H:%M:%S", time1)
+                            cursor.execute("SELECT * from registration where id_number=%s and date1 = %s", (levels, mydate))
+                            results = cursor.fetchone()
 
-                            cursor.execute("INSERT INTO registration(id_number) VALUES(%s)", (levels))
-                            # data = cursor.fetchone()
-                            conn.commit()
-                            # session['email'] = email
-                            # session.pop('email', None)
-                            # Close connection
-                            cursor.close()
-                            conn.close()
-                            # return redirect(url_for('add'))
-                            return render_template('notification.html', levels=levels)
-                            # return render_template('index.html', levels=levels)
+                            if cursor.rowcount > 0:
+                                return render_template('notification.html', levels="Attendance already marked as "+ levels)
+                            else:
+                                cursor.execute("INSERT INTO registration(id_number, time1, date1) VALUES(%s, %s, %s)", (levels, time1, date1))
+                                conn.commit()
+                                cursor.close()
+                                conn.close()
+                                return render_template('notification.html', levels="Attendance has been Marked as " + levels)
+                                # return render_template('index.html', levels=levels)
                             p += 1
-                        print(levels)
 
                     # level = labels[id_]
                     # session['level'] = level
@@ -259,33 +281,23 @@ def recognise():
         return 'Recognition stopped'
 
 
-@app.route('/add')
-def sample():
-    return render_template('add.html')
-
-
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if 'email' in session:
+        return redirect(url_for('index'))
+        # return render_template('index.html')
+    else:
+        return render_template('login.html')
+
 
 
 @app.route('/registration')
 def registration():
-    return render_template('registration.html')
-
-
-@app.route('/developer')
-def developer():
-    return render_template('developer.html')
-
-
-@app.route('/log')
-def loki():
-    if 'username' in session:
-        username = session['username']
-        return 'Logged in as ' + username + '<br>' + "<b><a href = '/logout'>click here to log out</a></b>"
+    if 'email' in session:
+        return redirect(url_for('index'))
+        # return render_template('index.html')
     else:
-        return "You are not logged in <br><a href = '/login'></b>" + "click here to log in</b></a>"
+        return render_template('registration.html')
 
 
 @app.route('/logout')
@@ -301,29 +313,37 @@ def regi():
     if request.method == "POST":
         regi1 = request.form
         name = regi1['signname']
+        id_num = regi1['id_number']
         email = regi1['signemail']
         phone = regi1['signphone']
         password = regi1['signpass']
         confirmpassword = regi1['signpass1']
-        if password != confirmpassword:
-            return "Opps!!! password didn't match"
+
         conn = mysql.connect()
         cursor = conn.cursor()
+        cursor.execute("SELECT * from account where id_number = %s", (id_num,))
+        data = cursor.fetchone()
+        # count = cursor.rowcount
+        if cursor.rowcount > 0:
+            return render_template('signupstatus.html', status="Account Already Exists. Failed to Register.")
 
-        # cursor.execute("SELECT * from todotask where id=2")
-        cursor.execute("INSERT INTO account(name, email, phone, password) VALUES(%s, %s, %s, %s)", (name, email,phone, password))
-        # data = cursor.fetchone()
-        conn.commit()
-        # session['email'] = email
-        # session.pop('email', None)
-        # Close connection
-        cursor.close()
-        conn.close()
-        # return redirect(url_for('add'))
-        return "Registration Successful."
+        elif password != confirmpassword:
+            return render_template('signupstatus.html', status="Opps!!! password didn't match. Failed to Register.")
+        else:
+            # cursor.execute("SELECT * from todotask where id=2")
+            cursor.execute("INSERT INTO account(name, id_number, email, phone, password,type) VALUES(%s, %s,%s, %s, %s, %s)", (name, id_num, email, phone, password,'0'))
+            # data = cursor.fetchone()
+            conn.commit()
+            # session['email'] = email
+            # session.pop('email', None)
+            # Close connection
+            cursor.close()
+            conn.close()
+            # return redirect(url_for('add'))
+            return render_template('signupstatus.html', status="Registration Successful")
 
 
-# registration form
+# login form
 @app.route('/login', methods=['POST'])
 def log():
     if request.method == "POST":
@@ -334,16 +354,20 @@ def log():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * from account where email=email and password = password")
+        cursor.execute("SELECT * from account where email=%s and password = %s", (email, password))
         # records = cursor.fetchall()
         # cursor.execute("INSERT INTO account(name) VALUES(%s)", (name)
         results = cursor.fetchone()
-        if results:
-            email1 = str(results[2])
-            session['email'] = email1
-            email1 = session['email']
-            return render_template('index.html', email1=email1)
-
+        if cursor.rowcount > 0:
+            if str(results[6]) == '1':
+                email1 = str(results[3])
+                session['email'] = email1
+                email1 = session['email']
+                return render_template('index.html', level="Hi! " + email1)
+            else:
+                return render_template('login-status.html', level="Sorry!!! Student's Login System is Not Available.")
+        else:
+            return render_template('login-status.html')
         cursor.close()
         conn.close()
 
@@ -355,6 +379,185 @@ def log():
 
         # return redirect(url_for('add'))
         # return "Logged in"
+
+
+# login using face-recognition
+@app.route('/facelogin', methods=['POST'])
+def facelogin():
+    if request.method == "POST":
+        import numpy as np
+        import cv2
+        import pickle
+
+        face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+        recognizer = cv2.face.LBPHFaceRecognizer_create()
+        recognizer.read("face-trainner.yml")
+
+        labels = {"person_name": 1}  # load label from pickle
+
+        with open("labels.pickle", 'rb') as f:
+            og_labels = pickle.load(f)
+            labels = {v: k for k, v in og_labels.items()}  # inverting the key value pairs
+
+        cap = cv2.VideoCapture(0)
+
+        while True:
+            # Capture frame-by-frame
+            ret, frame = cap.read()
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+            for (x, y, w, h) in faces:
+                roi_gray = gray[y:y + h, x:x + w]  # (ycord_start, ycord_end)
+                # roi_color = frame[y:y + h, x:x + w]
+                # cv2.rectangle(faces, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                id_, conf = recognizer.predict(roi_gray)
+                if conf >= 70 and conf <= 80:
+                    p = 0
+                    if labels[id_]:
+                        p = 1
+                        if p == 1:
+                            session['level'] = labels[id_]
+                            levels = session['level']
+                            conn = mysql.connect()
+                            cursor = conn.cursor()
+                            date1 = dd.date.today()
+                            mydate = str(date1)
+                            time1 = tt.localtime()
+                            time1 = tt.strftime("%H:%M:%S", time1)
+                            cursor.execute("SELECT * from account where id_number=%s", (levels))
+                            results = cursor.fetchone()
+                            if cursor.rowcount > 0:
+                                if str(results[6]) == '1':
+                                    email1 = str(results[3])
+                                    session['email'] = email1
+                                    email1 = session['email']
+
+                                    return render_template('index.html', level="Hi! " + email1)
+                                else:
+                                    return render_template('login-status.html',
+                                                           level="Sorry!!! Student's Login System is Not Available.")
+                            p += 1
+
+                    font = cv2.FONT_HERSHEY_SIMPLEX
+                    name = labels[id_]
+                    color = (255, 255, 255)
+                    stroke = 2
+                    cv2.putText(frame, name, (x, y), font, 1, color, stroke, cv2.LINE_AA)
+
+                color = (255, 0, 0)  # BGR
+                stroke = 2
+                end_cord_x = x + w
+                end_cord_y = y + h
+                cv2.rectangle(frame, (x, y), (end_cord_x, end_cord_y), color, stroke)
+
+            cv2.imshow('frame', frame)
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
+
+        # When everything done, release the capture
+        cap.release()
+        cv2.destroyAllWindows()
+        return 'Recognition stopped'
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * from account where email=%s and password = %s", (email, password))
+        # records = cursor.fetchall()
+        # cursor.execute("INSERT INTO account(name) VALUES(%s)", (name)
+        results = cursor.fetchone()
+        if cursor.rowcount > 0:
+            if str(results[6]) == '1':
+                email1 = str(results[3])
+                session['email'] = email1
+                email1 = session['email']
+                return render_template('index.html', level="Hi! " + email1)
+            else:
+                return render_template('login-status.html', level="Sorry!!! Student's Login System is Not Available.")
+        else:
+            return render_template('login-status.html')
+        cursor.close()
+        conn.close()
+
+        # conn.commit():
+        # fetchmany () or fetchall ()
+        # session['email'] = email
+        # session.pop('email', None)
+        # Close connection
+
+        # return redirect(url_for('add'))
+        # return "Logged in"
+
+
+# attendance
+@app.route('/attend', methods=['POST'])
+def attend():
+    if request.method == "POST":
+        date1 = dd.date.today()
+        mydate = str(date1)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * from account,registration where (registration.date1=%s) and (account.id_number=registration.id_number) and (registration.id_number!='00000') and (registration.id_number between 53000 and 53999)", (mydate))
+        results = cursor.fetchall()
+        if cursor.rowcount > 0:
+            return render_template('attendance.html', level=results)
+        cursor.close()
+        conn.close()
+
+
+@app.route('/second', methods=['POST'])
+def second():
+    if request.method == "POST":
+        date1 = dd.date.today()
+        mydate = str(date1)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * from account,registration where (registration.date1=%s) and (account.id_number=registration.id_number) and (registration.id_number!='00000') and (registration.id_number between 52000 and 52999)", (mydate))
+        results = cursor.fetchall()
+        if cursor.rowcount > 0:
+            return render_template('attendance.html', level=results)
+        cursor.close()
+        conn.close()
+
+
+@app.route('/third', methods=['POST'])
+def third():
+    if request.method == "POST":
+        date1 = dd.date.today()
+        mydate = str(date1)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * from account,registration where (registration.date1=%s) and (account.id_number=registration.id_number) and (registration.id_number!='00000') and (registration.id_number between 51000 and 51999)", (mydate))
+        results = cursor.fetchall()
+        # account.id_number=registration.id_number and
+        if cursor.rowcount > 0:
+            return render_template('attendance.html', level=results)
+        cursor.close()
+        conn.close()
+
+
+@app.route('/final', methods=['POST'])
+def final():
+    if request.method == "POST":
+        date1 = dd.date.today()
+        mydate = str(date1)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * from account,registration where (registration.date1=%s) and (account.id_number=registration.id_number) and (registration.id_number!='00000') and (registration.id_number between 50000 and 50999)", (mydate))
+        results = cursor.fetchall()
+        if cursor.rowcount > 0:
+            return render_template('attendance.html', level=results)
+        cursor.close()
+        conn.close()
 
 
 if __name__ == '__main__':

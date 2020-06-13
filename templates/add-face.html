@@ -19,23 +19,34 @@
 <body class="b-tdb-gray5" id="body">
   <!--sidebar-->
 <div class="sidebar">
-    <a href="/"><p>Home</p></a>
+<a href="/"><p>Home</p></a>
+    {% if 'email' in session %}
+    <a href="/logout"><p>Logout</p></a>
+
+    {% else %}
+    <a href="/registration"><p>New Account</p></a>
     <a href="/login"><p>Login</p></a>
-    <a href="/developer"><p>Developers</p></a>
-</div>
+    {% endif %}
+    <a href="mailto:azeemmuhammad98@gmail.com"><p>Support</p></a>
+    </div>
 
 <nav class="b-tdb-white bold-tdb5 font-tdb 16 c-tdb-gray7 s-center-tdb1">
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
-<div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
+<div class="nav-desktop col-md-8 left bold-tdb4 c-tdb-green5">
 <a href="/" class="c-tdb-black">Home</a>
+{% if 'email' in session %}
+<a href="/logout" class="c-tdb-black">Logout</a>
+{% else %}
 <a href="/login" class="c-tdb-black">Login</a>
+<a href="/registration" class="c-tdb-black">Registration</a>
+{% endif %}
+<a href="#tools" class="c-tdb-black">Tools</a>
 <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
-<a href="/developer" class="c-tdb-black">Developers</a>
 </div>
-<div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-black">
-<!--<a href="html5.html">Login</a><a href="css3.html">SignUp</a>-->
+<div class="nav-desktop col-md-1 left bold-tdb4 c-tdb-black">
+<a href="https://github.com/phoenixFire33/Atttendence-System"><i class="fab fa-github font-tdb22"></i></a>
 </div>
 </div>
 </div>
@@ -57,12 +68,12 @@
 					<i class="fa fa-laptop c-tdb-gray1 font-tdb50"></i>
 					</div>
 					</div><br><br>
-			<p class="font-tdb40 bold-tdb2">Registration System<br>
+			<p class="font-tdb40 bold-tdb2">Data Set Creator<br>
 			 Team Thedeveloper<span class="c-tdb-green8 bold-tdb2">Brains</span></p>
 			  </div>
 			  <div class="center font-tdb17 bold-tdb1">
 			COLLEGE OF TECHNOLOGY PANTNAGAR<br><br><br>
-				<a href="#template"><span class="sign s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-green8 c-tdb-white">Register Now</span></a>
+				<a href="/add-face"><span class="sign s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-green8 c-tdb-white">Create Dataset</span></a>
 				<br><br><br><br><br><br><br>
 			</div>
 
@@ -77,35 +88,36 @@
 
 
 
-
     <!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer-->
 
-    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7" ><br><br>
+    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7"><br><br>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">WEB TECHNOLOGY</h1>
-                                <a href="#" class="c-tdb-gray7">Login</a><br>
-                                <a href="#" class="c-tdb-gray7">Sign Up</a><br>
-                                <a href="#" class="c-tdb-gray7">Help</a><br>
-                                <a href="#" class="c-tdb-gray7">Support</a>
-
+                                <h1 class="font-tdb14 bold-tdb4">NAVIGATION</h1>
+                                <a href="/" class="c-tdb-gray7">Home</a><br>
+                                <a href="/login" class="c-tdb-gray7">Login</a><br>
+                                <a href="/registration" class="c-tdb-gray7">Sign Up</a><br>
+                                <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-gray7">Support</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">LINKS</h1>
+                                <h1 class="font-tdb14 bold-tdb4">OTHER LINKS</h1>
                                 <a href="https://www.thedeveloperbrains.com" class="c-tdb-gray7">The developer brains</a>
+                              <br> <a href="https://github.com/phoenixFire33/Atttendence-System" class="c-tdb-gray7">GitHub</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
                                 <h1 class="font-tdb14 bold-tdb4">ADDRESS</h1>
+                                I.T. Department,
+                                College of Technology,
                                 G.B.P.U.A.T, Pantnagar<br>
                                 PIN 244713
 
@@ -121,23 +133,22 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12" style="text-align: justify;">
-                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1> Face Recognition app using Artificial Intelligence. You can easily control student's attendance activities by using this AI App.                               <br>
-                                <br><br><br><br>
+                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1>
+                                Advance attendance management system using face detection app is used to detect faces
+                                and then it is recognised with the Database and finally the attendance is marked.<br>
+                                <br><br>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 padding-left-tdb30">
-                    © Copyright 2020, thedeveloperbrains. All rights are reserved.
+                    @Team TheDeveloperBrains. G.B.P.U.A.T Pantnagar
                 </div>
 
             </div>
         </div>
     </section>
-
-
-
 
 
 

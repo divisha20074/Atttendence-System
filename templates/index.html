@@ -21,35 +21,40 @@
 <body class="b-tdb-pro5">
     <!--sidebar-->
 <div class="sidebar">
-    <a href="/registration"><p>New Account</p></a>
-    {% if session['email'] %}
+
+    {% if 'email' in session %}
     <a href="/logout"><p>Logout</p></a>
 
     {% else %}
+    <a href="/registration"><p>New Account</p></a>
     <a href="/login"><p>Login</p></a>
     {% endif %}
-
-    <a href="/developer"><p>Developers</p></a>
-</div>
+    <a href="mailto:azeemmuhammad98@gmail.com"><p>Support</p></a>
+    </div>
 
 <nav class="b-tdb-white bold-tdb5 font-tdb 16 c-tdb-gray7 s-center-tdb1">
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
-<div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
-        {% if session['email'] %}
+<div class="nav-desktop col-md-5 left bold-tdb4 c-tdb-green5">
+{% if 'email' in session %}
 <a href="/logout" class="c-tdb-black">Logout</a>
-            {% else %}
-            <a href="/login" class="c-tdb-black">Login</a>
-    {% endif %}
-
+{% else %}
+<a href="/login" class="c-tdb-black">Login</a>
 <a href="/registration" class="c-tdb-black">Registration</a>
+{% endif %}
+
+
+
 <a href="#tools" class="c-tdb-black">Tools</a>
 <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
-<a href="/developer" class="c-tdb-black">Developers</a>
+
 </div>
-<div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-black">
-<!--<a href="html5.html">Login</a><a href="css3.html">SignUp</a>-->
+<div class="nav-desktop col-md-4 left bold-tdb4 c-tdb-gray6">
+    {% if 'email' in session %}
+    <i class="fa fa-user"></i> {{ session['email'] }}
+    {% endif %}
+<a href="https://github.com/phoenixFire33/Atttendence-System"><i class="c-tdb-black fab fa-github font-tdb22" style="float: right"></i></a>
 </div>
 </div>
 </div>
@@ -58,9 +63,9 @@
 </nav>
 
 <section class="header c-tdb-white position-r-tdb" style="background:linear-gradient(to right,#131635, #3b47a7,#131635)">
-    <img src="../static/img/2.png" class="mylogo1 position-a-tdb" style="top:115px;left:-20px;width:40%;z-index:0;opacity: 0.5;">
+    <img src="../static/img/2.png" class="mylogo1 position-a-tdb" style="top:115px;left:10px;width:25%;z-index:0;opacity: 0.5;">
 
-    <img src="../static/img/2.png" alt="developerbrains" class="mylogo2 position-a-tdb" style="top:60px;right:10px;width:30%;z-index:0;opacity: 0.5;">
+    <img src="../static/img/2.png" alt="developerbrains" class="mylogo2 position-a-tdb" style="top:80px;right:10px;width:30%;z-index:0;opacity: 0.5;">
 
 <center>
    <img src="../static/img/2.png" alt="developerbrains" class="w-px-tdb200 mylogo" style="margin:0 auto;">
@@ -113,10 +118,6 @@
         </div>
     </section>
 
-    <div class="center">
-{{ session['email'] }}
-        {{ levels }}
-    </div>
 
     <section id="learn" class="center section1 b-tdb-green1 position-r-tdb c-tdb-gray8">
         <br>
@@ -129,41 +130,46 @@
         <br>
         <div class="container" >
             <div class="row">
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
+                <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
                     <a href="/add-face" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Create Dataset</h1>
-                        <br>Create a new dataset for face recognition app.
+                        <br>Create a new dataset for face this recognition app.
                         <br>
                         <br><br>
                     </div></a>
                 </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
+                <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
                     <a href="/train" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Train Dataset</h1>
-                        <br>Start training dataset
+                        <br>Start training dataset.
                         <br>
                         <br><br>
                     </div></a>
                 </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
+                <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
                     <a href="/recogniser" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Recognize + Attendance</h1>
-                        <br>Start Attendance Recognizer
+                        <br>Start Recognising your face.
                         <br>
                         <br><br>
                     </div></a>
                 </div>
-                <div class="col-lg-4 padding-left-tdb5 padding-right-tdb5">
-                    <a href="#" style="text-decoration: none"><div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
+                <div class="col-lg-6 padding-left-tdb5 padding-right-tdb5">
+                    {% if 'email' in session %}
+                    <a href="/attendance" style="text-decoration: none">
+                        <div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                        <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Attendance Sheet</h1>
-                         <br>Show Attendance Sheet
+                         <br>Show Current Attendance Data
+
                         <br>
                         <br><br>
                     </div></a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
@@ -195,35 +201,40 @@
             </svg>
         </div>
     </section>
-    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7">
+
+    <!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer--><!--footer-->
+
+    <section class="section2 b-tdb-black font-tdb14 c-tdb-gray7"><br><br>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">WEB TECHNOLOGY</h1>
-                                <a href="#" class="c-tdb-gray7">Login</a><br>
-                                <a href="#" class="c-tdb-gray7">Sign Up</a><br>
-                                <a href="#" class="c-tdb-gray7">Help</a><br>
-                                <a href="#" class="c-tdb-gray7">Support</a>
-
+                                <h1 class="font-tdb14 bold-tdb4">NAVIGATION</h1>
+                                <a href="/" class="c-tdb-gray7">Home</a><br>
+                                <a href="/login" class="c-tdb-gray7">Login</a><br>
+                                <a href="/registration" class="c-tdb-gray7">Sign Up</a><br>
+                                <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-gray7">Support</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
-                                <h1 class="font-tdb14 bold-tdb4">LINKS</h1>
+                                <h1 class="font-tdb14 bold-tdb4">OTHER LINKS</h1>
                                 <a href="https://www.thedeveloperbrains.com" class="c-tdb-gray7">The developer brains</a>
+                              <br> <a href="https://github.com/phoenixFire33/Atttendence-System" class="c-tdb-gray7">GitHub</a>
                                 <br>
                                 <br>
                                 <br>
                             </div>
                             <div class="col-md-4">
                                 <h1 class="font-tdb14 bold-tdb4">ADDRESS</h1>
+                                I.T. Department,
+                                College of Technology,
                                 G.B.P.U.A.T, Pantnagar<br>
                                 PIN 244713
-                               
+
                                 <br>
                                 <br>
                                 <br>
@@ -236,21 +247,22 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12" style="text-align: justify;">
-                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1> Face Recognition app using Artificial Intelligence. You can easily control student's attendance activities by using this AI App.                               <br>
-                                <br><br><br><br>
+                                <h1 class="font-tdb16 bold-tdb3">ABOUT APP!</h1>
+                                Advance attendance management system using face detection app is used to detect faces
+                                and then it is recognised with the Database and finally the attendance is marked.<br>
+                                <br><br>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 padding-left-tdb30">
-                    © Copyright 2020, thedeveloperbrains. All rights are reserved.
+                    @Team TheDeveloperBrains. G.B.P.U.A.T Pantnagar
                 </div>
 
             </div>
         </div>
     </section>
-
 </body>
 
 </html>
