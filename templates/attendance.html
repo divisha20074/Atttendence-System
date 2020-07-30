@@ -41,15 +41,17 @@
 <div class="row">
 <div class="col-md-3">&lt/Face Recognition></div>
 <div class="nav-desktop col-md-6 left bold-tdb4 c-tdb-green5">
-{% if session['email'] %}
-<a href="/logout" class="c-tdb-black">Logout</a>
-{% else %}
-<a href="/login" class="c-tdb-black">Login</a>
-{% endif %}
+<a href="/" class="c-tdb-black">Home</a>
+
 
 
 <a href="#tools" class="c-tdb-black">Attendance</a>
 <a href="mailto:azeemmuhammad98@gmail.com" class="c-tdb-black">Support</a>
+    {% if session['email'] %}
+<a href="/logout" class="c-tdb-black">Logout</a>
+{% else %}
+<a href="/login" class="c-tdb-black">Login</a>
+{% endif %}
 </div>
 <div class="nav-desktop col-md-3 left bold-tdb4 c-tdb-gray6">
     <i class="fa fa-user"></i> {{ session['email'] }}
@@ -131,7 +133,7 @@
                     <div class="btn-tdb1 b-tdb-white margin-bottom-tdb40 s-center-tdb1 font-tdb14 center padding-left-tdb15 bold-tdb3 padding-right-tdb15 c-tdb-gray6 letter-tdb1">
                         <br>
                         <h1 class="c-tdb-red5 font-tdb23 bold-tdb3 letter-tdb1">Attendance Sheet</h1>
-                        <br>Click on the buttons to fetch the Attendance Sheet<br><br>
+                        <br>Click on the buttons to fetch the Attendance Data<br><br>
                         <form action="{{url_for('attend')}}" method="POST" style="display: inline-block">
                         <input type="submit" class="s-left-tdb1 btn-tdb btn-tdb1 bold-tdb3 b-tdb-green8 c-tdb-white center" value="1st Year"/>
                         </form>
@@ -159,8 +161,8 @@
                                 <td class="w-per-tdb5">Id Number</td>
                                 <td class="w-per-tdb5">Email Id</td>
                                 <td class="w-per-tdb5">Phone Number</td>
+                                <td class="w-per-tdb5">ID Number</td>
                                 <td class="w-per-tdb5">Time</td>
-                                <td class="w-per-tdb5">Date</td>
                             </tr>
                             </thead>
                             <tbody>

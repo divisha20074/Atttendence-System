@@ -2,7 +2,7 @@ from flask import *
 from flaskext.mysql import MySQL
 import datetime as dd
 import time as tt
-# from wtforms import Form, StringField, TextAreaField, validators
+
 app = Flask(__name__)
 app.secret_key = 'developerbrains'
 
@@ -12,7 +12,6 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'face_recog'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
-
 
 
 @app.route('/attendance')
@@ -61,87 +60,90 @@ def myface():
         cursor = conn.cursor()
 
         cursor.execute("SELECT * from account where id_number=%s", (student_id))
-        results = cursor.fetchone()
-        if str(results[7]) == '1':
-            return 'Already Registered...'
+        if cursor.rowcount > 0:
+            results = cursor.fetchone()
+            if str(results[7]) == '1':
+                return 'Already Registered...'
+            else:
+                # Directory
+                directory = student_id
 
+                # Parent Directory path
+                parent_dir = "dataset/"
+
+                # Path
+                path = os.path.join(parent_dir, directory)
+
+                os.mkdir(path)
+                print("Directory '% s' created" % directory)
+
+                # starting video cam
+                vid_cam = cv2.VideoCapture(0)
+
+                # detecting face using haarcascade
+                face_detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+                # initial count
+                count = 0
+
+                # looping
+                while True:
+
+                    # capture image from video
+                    ret, img_frame = vid_cam.read()
+
+                    # now converting image into gray scale image
+                    gray = cv2.cvtColor(img_frame, cv2.COLOR_BGR2GRAY)
+
+                    # detecting face rectangle in frame
+                    face = face_detector.detectMultiScale(gray, 1.3, 6)
+
+                    # loop for each face
+                    for (x, y, w, h) in face:
+                        # cropping image frame into face rectangle
+                        cv2.rectangle(img_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                        img = gray[y:y + h, x:x + w]
+                        count += 1
+
+                        # saving the capture face rectangle
+
+                        cv2.imwrite(os.path.join(path, "" + str(count) + ".jpg"), img)
+
+                        # create a on screen counter  to show no of face captured
+                        cv2.putText(img_frame, str(count), (30, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 1)
+                        # cv2.putText(img_frame, str(student_id), (40, 40), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 1)
+
+                        # show frame with rectangle on face
+                        cv2.imshow("capturing frame", img_frame)
+
+                    if count == 100:
+                        print("capture complete")
+                        break
+                    elif cv2.waitKey(1) & 0xff == ord('q'):
+                        break
+
+                conn = mysql.connect()
+                cursor = conn.cursor()
+
+                # cursor.execute("SELECT * from todotask where id=2")
+                cursor.execute("UPDATE face_recog.account set status='1' where id_number=%s", (student_id))
+                # data = cursor.fetchone()
+                conn.commit()
+                # session['email'] = email
+                # session.pop('email', None)
+                # Close connection
+                cursor.close()
+                conn.close()
+
+                # stop video
+                vid_cam.release()
+
+                # close all win
+                cv2.destroyAllWindows()
         else:
-            # Directory
-            directory = student_id
-
-            # Parent Directory path
-            parent_dir = "dataset/"
-
-            # Path
-            path = os.path.join(parent_dir, directory)
-
-            os.mkdir(path)
-            print("Directory '% s' created" % directory)
-
-            # starting video cam
-            vid_cam = cv2.VideoCapture(0)
-
-            # detecting face using haarcascade
-            face_detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-
-            # initial count
-            count = 0
-
-            # looping
-            while True:
-
-                # capture image from video
-                ret, img_frame = vid_cam.read()
-
-                # now converting image into gray scale image
-                gray = cv2.cvtColor(img_frame, cv2.COLOR_BGR2GRAY)
-
-                # detecting face rectangle in frame
-                face = face_detector.detectMultiScale(gray, 1.3, 6)
-
-                # loop for each face
-                for (x, y, w, h) in face:
-                    # cropping image frame into face rectangle
-                    cv2.rectangle(img_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                    img = gray[y:y + h, x:x + w]
-                    count += 1
-
-                    # saving the capture face rectangle
-
-                    cv2.imwrite(os.path.join(path, "" + str(count) + ".jpg"), img)
-
-                    # create a on screen counter  to show no of face captured
-                    cv2.putText(img_frame, str(count), (30, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 1)
-                    # cv2.putText(img_frame, str(student_id), (40, 40), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 0, 0), 1)
-
-                    # show frame with rectangle on face
-                    cv2.imshow("capturing frame", img_frame)
-
-                if count == 100:
-                    print("capture complete")
-                    break
-                elif cv2.waitKey(1) & 0xff == ord('q'):
-                    break
-
-            conn = mysql.connect()
-            cursor = conn.cursor()
-
-            # cursor.execute("SELECT * from todotask where id=2")
-            cursor.execute("UPDATE face_recog.account set status='1' where id_number=%s", (student_id))
-            # data = cursor.fetchone()
-            conn.commit()
-            # session['email'] = email
-            # session.pop('email', None)
-            # Close connection
-            cursor.close()
-            conn.close()
-
-            # stop video
-            vid_cam.release()
-
-            # close all win
-            cv2.destroyAllWindows()
+            return 'You are not a Registered student...<a href="/">Go to home</a>'
     return render_template('data-status.html')
+
 
 
 @app.route('/train')
@@ -244,12 +246,14 @@ def recognise():
 
                             if cursor.rowcount > 0:
                                 return render_template('notification.html', levels="Attendance already marked as "+ levels)
+                                #recognise()
                             else:
                                 cursor.execute("INSERT INTO registration(id_number, time1, date1) VALUES(%s, %s, %s)", (levels, time1, date1))
                                 conn.commit()
                                 cursor.close()
                                 conn.close()
                                 return render_template('notification.html', levels="Attendance has been Marked as " + levels)
+                                # recognise()
                                 # return render_template('index.html', levels=levels)
                             p += 1
 
@@ -288,7 +292,6 @@ def login():
         # return render_template('index.html')
     else:
         return render_template('login.html')
-
 
 
 @app.route('/registration')
@@ -504,6 +507,8 @@ def attend():
         results = cursor.fetchall()
         if cursor.rowcount > 0:
             return render_template('attendance.html', level=results)
+        else:
+            return "Data not found"
         cursor.close()
         conn.close()
 
@@ -521,6 +526,8 @@ def second():
         results = cursor.fetchall()
         if cursor.rowcount > 0:
             return render_template('attendance.html', level=results)
+        else:
+            return "Data not found"
         cursor.close()
         conn.close()
 
@@ -539,6 +546,9 @@ def third():
         # account.id_number=registration.id_number and
         if cursor.rowcount > 0:
             return render_template('attendance.html', level=results)
+        else:
+            return "Data not found"
+            
         cursor.close()
         conn.close()
 
@@ -556,6 +566,8 @@ def final():
         results = cursor.fetchall()
         if cursor.rowcount > 0:
             return render_template('attendance.html', level=results)
+        else:
+            return "Data not found"
         cursor.close()
         conn.close()
 

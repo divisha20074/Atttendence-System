@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2020 at 02:38 PM
+-- Generation Time: Jul 30, 2020 at 08:44 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -44,13 +44,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `name`, `id_number`, `email`, `password`, `phone`, `type`, `status`) VALUES
-(24, 'muhammad azeem', 50688, 'azeemmuhammad98@gmail.com', '1234', '08077401297', 1, 1),
-(26, 'student1', 51688, 'student@gmail.com', '1234', '000000000', 0, 0),
-(27, 'student2', 52688, 'student2@gmail.com', '1234', '000000000', 0, 0),
-(28, 'student3', 53688, 'student3@gmail.com', '1234', '000000000', 0, 0),
-(29, 'student4', 54688, 'student4@gmail.com', '1234', '000000000', 0, 0),
-(30, 'Shivam', 50600, 'shivam@gmail.com', '1234', '08077401297', 0, 0),
-(31, 'Siddahath', 50601, 'sidd@gmail.com', '1234', '08077401297', 0, 0);
+(1, 'muhammad azeem', 50688, 'azeemmuhammad98@gmail.com', '1234', '08077401297', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -70,16 +64,7 @@ CREATE TABLE `registration` (
 --
 
 INSERT INTO `registration` (`id`, `id_number`, `time1`, `date1`) VALUES
-(1, '00000', '00:00:00', '2020-20-20'),
-(3, '50688', '20:23:36', '2020-06-12'),
-(5, '54688', '20:23:36', '2020-06-13'),
-(6, '53688', '20:23:36', '2020-06-13'),
-(7, '51688', '20:23:36', '2020-06-13'),
-(8, '50600', '20:23:36', '2020-06-12'),
-(9, '50601', '20:23:36', '2020-06-12'),
-(10, '50600', '20:23:36', '2020-06-13'),
-(67, '52688', '20:23:36', '2020-06-13'),
-(76, '50688', '17:56:29', '2020-06-13');
+(4, '50688', '14:44:20', '2020-07-13');
 
 --
 -- Indexes for dumped tables
@@ -107,13 +92,13 @@ ALTER TABLE `registration`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
